@@ -53,7 +53,7 @@ public class TestSort {
 
         String s = array.get(0).toString();
         for (int i = 1; i < array.size(); i++) {
-            s += " " + array.get(i);
+            s = s + " " + array.get(i);
         }
         System.out.println(s);
     }
