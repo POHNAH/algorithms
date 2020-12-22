@@ -14,9 +14,27 @@ public class TestSort {
         getArray(numbers,20);
         printArray(numbers);
         Date d1 = new Date();
-        quickSort(numbers,0,numbers.size() - 1);
+        selectionSort(numbers);
         Date d2 = new Date();
-        System.out.println(d2.getTime() - d1.getTime());
+        System.out.println("Время выполнения алгоритма: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        printArray(numbers);
+        System.out.println("");
+
+        getArray(numbers,20);
+        printArray(numbers);
+        d1 = new Date();
+        selectionSortMinMax(numbers);
+        d2 = new Date();
+        System.out.println("Время выполнения алгоритма: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        printArray(numbers);
+        System.out.println("");
+
+        getArray(numbers,20);
+        printArray(numbers);
+        d1 = new Date();
+        quickSort(numbers,0,numbers.size() - 1);
+        d2 = new Date();
+        System.out.println("Время выполнения алгоритма: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
         printArray(numbers);
 
     }
@@ -25,7 +43,7 @@ public class TestSort {
     public static void getArray(List<Integer> array, int arraySize) {
         array.clear();
         for (int i = 0; i < arraySize; i++) {
-            array.add((int) (Math.random() * 100));
+            array.add((int) (Math.random() * 10000));
         }
     }
 
@@ -44,7 +62,7 @@ public class TestSort {
     private static void swap(List<Integer> array, int indexA, int indexB) {
         if (indexA == indexB) return;
 
-        System.out.println("Swap: " + indexA + ":" + array.get(indexA) + " c " + indexB + ":" + array.get(indexB));
+//        System.out.println("Swap: " + indexA + ":" + array.get(indexA) + " c " + indexB + ":" + array.get(indexB));
         array.set(indexA, array.get(indexA) + array.get(indexB));
         array.set(indexB, array.get(indexA) - array.get(indexB));
         array.set(indexA, array.get(indexA) - array.get(indexB));
@@ -92,5 +110,56 @@ public class TestSort {
 
         quickSort(numbers,leftIndex,left - 1);
         quickSort(numbers, left + 1, rightIndex);
+    }
+
+//  Вортировка выбором или Selection Sort
+//  Суть сортировки в поискем минимального элемента массива и установки его на его место
+//  Далее тоже самое происходит для оствшейся части массива
+//  Таким образом мы ставим один элемент на свое место при каждой итерации внешнего цикла
+    private static void selectionSort(List<Integer> array) {
+        for (int i = 0; i < array.size(); i++) {
+            int min = array.get(i);
+            int indexMin = i;
+            for (int j = i + 1; j < array.size(); j++) {
+                if (min > array.get(j)) {
+                    min = array.get(j);
+                    indexMin = j;
+                }
+            }
+            if (indexMin != i) {
+                swap(array, i, indexMin);
+            }
+        }
+    }
+
+//  Доработка сортировки выбором которая напрашивается сразу
+//  Кажется, что весь неотсартированный массив мы проходим полностью каждый раз
+//  Тогда почему нане искать минимально и максимальное число
+//  Таким образом мы в каждой итерации внешнего цикла будем ставить на мето 2 элемента вместо одного
+//  уменьшим таки образом число шагов внешнего цикла в двое
+    private static void selectionSortMinMax(List<Integer> array) {
+        for (int i = 0; i < array.size() / 2; i++) {
+            int min = array.get(i);
+            int indexMin = i;
+            int max = array.get(i);
+            int indexMax = i;
+            for (int j = i + 1; j < array.size() - i; j++) {
+                if (min > array.get(j)) {
+                    min = array.get(j);
+                    indexMin = j;
+                }
+                if (max < array.get(j)) {
+                    max = array.get(j);
+                    indexMax = j;
+                }
+            }
+            if (indexMin != i) {
+                swap(array, i, indexMin);
+            }
+
+            if (indexMax != array.size() - i) {
+                swap(array, array.size() - i - 1, indexMax);
+            }
+        }
     }
 }
