@@ -7,34 +7,43 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TestSort {
+public class SortArray {
     public static List<Integer> numbers = new ArrayList<>();
 
     public static void main(String[] args) {
-        getArray(numbers,20);
+        getArray(numbers,100);
         printArray(numbers);
         Date d1 = new Date();
-        selectionSort(numbers);
+        bubbleSort(numbers);
         Date d2 = new Date();
-        System.out.println("Время выполнения алгоритма: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        System.out.println("Время выполнения алгоритма сортировка пузырьком: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
         printArray(numbers);
         System.out.println("");
 
-        getArray(numbers,20);
+        getArray(numbers,100);
+        printArray(numbers);
+        d1 = new Date();
+        selectionSort(numbers);
+        d2 = new Date();
+        System.out.println("Время выполнения алгоритма сортировка выбором: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        printArray(numbers);
+        System.out.println("");
+
+        getArray(numbers,100);
         printArray(numbers);
         d1 = new Date();
         selectionSortMinMax(numbers);
         d2 = new Date();
-        System.out.println("Время выполнения алгоритма: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        System.out.println("Время выполнения алгоритма сортировка выбором MinMax: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
         printArray(numbers);
         System.out.println("");
 
-        getArray(numbers,20);
+        getArray(numbers,100);
         printArray(numbers);
         d1 = new Date();
         quickSort(numbers,0,numbers.size() - 1);
         d2 = new Date();
-        System.out.println("Время выполнения алгоритма: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        System.out.println("Время выполнения алгоритма быстрая сортировка: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
         printArray(numbers);
 
     }
@@ -112,7 +121,7 @@ public class TestSort {
         quickSort(numbers, left + 1, rightIndex);
     }
 
-//  Вортировка выбором или Selection Sort
+//  Сортировка выбором или Selection Sort
 //  Суть сортировки в поискем минимального элемента массива и установки его на его место
 //  Далее тоже самое происходит для оствшейся части массива
 //  Таким образом мы ставим один элемент на свое место при каждой итерации внешнего цикла
@@ -160,6 +169,28 @@ public class TestSort {
             if (indexMax != array.size() - i) {
                 swap(array, array.size() - i - 1, indexMax);
             }
+        }
+    }
+
+//  Пузырьковая сортировка или Bubble Sort
+//  Суть алгоритма проста: сравниваем два соседних элемента рядом, если один больше другого,
+//  то меняем их местами. Так делаем постонно, до тех пор пока в цикле не проихошло ниодного обмена.
+//  Так же я не знаю класический это вариант или нет, но по сути каждая итераци я внешнего цикла
+//  ставить в конец, то есть на место самый большой элемент.
+//  Следовательно в каждую итерацию внешнего цикла можно прбегать внутренний цикл на одно сравнение меньше.
+    private static void bubbleSort(List<Integer> array) {
+        boolean f = true;
+        int i = 0;
+        while (f) {
+            f = false;
+
+            for (int j = 1; j < array.size() - i; j++) {
+                if (array.get(j) < array.get(j - 1)) {
+                    f = true;
+                    swap(array, j, j - 1);
+                }
+            }
+            ++i;
         }
     }
 }
