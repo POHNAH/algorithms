@@ -14,8 +14,17 @@ public class SortArray {
         getArray(numbers,100);
         printArray(numbers);
         Date d1 = new Date();
-        bubbleSort(numbers);
+        shakerSort(numbers);
         Date d2 = new Date();
+        System.out.println("Время выполнения алгоритма шейкерная сортировка: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        printArray(numbers);
+        System.out.println("");
+
+        getArray(numbers,100);
+        printArray(numbers);
+        d1 = new Date();
+        bubbleSort(numbers);
+        d2 = new Date();
         System.out.println("Время выполнения алгоритма сортировка пузырьком: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
         printArray(numbers);
         System.out.println("");
@@ -193,4 +202,35 @@ public class SortArray {
             ++i;
         }
     }
+
+//  Шейкерная сортировка или Shaker sort.
+//  Модификация пузырьковой сортировки. Идея в том, что мы наш алгоритм по переменно
+//  из начала в конец и из конца в начало. При каждом проходе выставляя по концам массива
+//  максимальный и минимальный элемент неосортированной части.
+    private static void shakerSort(List<Integer> array) {
+        boolean f = true;
+        int left = 0;
+        int right = array.size() - 1;
+
+        while (f) {
+            f = false;
+
+            for (int i = left + 1; i <= right; i++) {
+                if (array.get(i) < array.get(i - 1)) {
+                    f = true;
+                    swap(array, i, i - 1);
+                }
+            }
+            --right;
+
+            for (int i = right - 1; i >= left; i--) {
+                if (array.get(i) > array.get(i + 1)) {
+                    f = true;
+                    swap(array, i, i + 1);
+                }
+            }
+            ++left;
+        }
+    }
+
 }
