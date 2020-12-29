@@ -11,11 +11,41 @@ public class SortArray {
     public static List<Integer> numbers = new ArrayList<>();
 
     public static void main(String[] args) {
+//        numbers.clear();
+//        numbers.add(10);
+//        numbers.add(9);
+//        numbers.add(8);
+//        numbers.add(7);
+//        numbers.add(6);
+//        numbers.add(5);
+//        numbers.add(4);
+//        numbers.add(3);
+//        numbers.add(2);
+//        numbers.add(1);
+//        numbers.add(0);
         getArray(numbers,100);
         printArray(numbers);
         Date d1 = new Date();
-        shakerSort(numbers);
+        insertionSort(numbers);
         Date d2 = new Date();
+        System.out.println("Время выполнения алгоритма сортировка вставками: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        printArray(numbers);
+        System.out.println("");
+
+        getArray(numbers,100);
+        printArray(numbers);
+        d1 = new Date();
+        combSort(numbers);
+        d2 = new Date();
+        System.out.println("Время выполнения алгоритма сортировка расческой: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        printArray(numbers);
+        System.out.println("");
+
+        getArray(numbers,100);
+        printArray(numbers);
+        d1 = new Date();
+        shakerSort(numbers);
+        d2 = new Date();
         System.out.println("Время выполнения алгоритма шейкерная сортировка: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
         printArray(numbers);
         System.out.println("");
@@ -66,7 +96,7 @@ public class SortArray {
     }
 
 //  Метод выводит на экран содержание массива
-    private static void printArray(List<Integer> array) {
+    public static void printArray(List<Integer> array) {
         if (array.isEmpty()) return;
 
         String s = array.get(0).toString();
@@ -89,7 +119,7 @@ public class SortArray {
 //  QuickSort или быстрая сортировка.
 //  Рекурсивынй алгоритм на каждом проходе выставляет выбранный элемент с индексом mid на свое место.
 //  После чего запускает себя для массивов слева и справа от этого индекса.
-    private static void quickSort(List<Integer> array, int leftIndex, int rightIndex) {
+    public static void quickSort(List<Integer> array, int leftIndex, int rightIndex) {
         if (rightIndex <= leftIndex) return;
 
         int mid = (rightIndex + leftIndex) / 2;
@@ -134,7 +164,7 @@ public class SortArray {
 //  Суть сортировки в поискем минимального элемента массива и установки его на его место
 //  Далее тоже самое происходит для оствшейся части массива
 //  Таким образом мы ставим один элемент на свое место при каждой итерации внешнего цикла
-    private static void selectionSort(List<Integer> array) {
+    public static void selectionSort(List<Integer> array) {
         for (int i = 0; i < array.size(); i++) {
             int min = array.get(i);
             int indexMin = i;
@@ -155,7 +185,7 @@ public class SortArray {
 //  Тогда почему нане искать минимально и максимальное число
 //  Таким образом мы в каждой итерации внешнего цикла будем ставить на мето 2 элемента вместо одного
 //  уменьшим таки образом число шагов внешнего цикла в двое
-    private static void selectionSortMinMax(List<Integer> array) {
+    public static void selectionSortMinMax(List<Integer> array) {
         for (int i = 0; i < array.size() / 2; i++) {
             int min = array.get(i);
             int indexMin = i;
@@ -175,8 +205,10 @@ public class SortArray {
                 swap(array, i, indexMin);
             }
 
-            if (indexMax != array.size() - i) {
+            if ((indexMax != array.size() - i) && (indexMax != i)) {
                 swap(array, array.size() - i - 1, indexMax);
+//            } else if (indexMax == i) {
+//                swap(array, indexMax, indexMin);
             }
         }
     }
@@ -187,7 +219,7 @@ public class SortArray {
 //  Так же я не знаю класический это вариант или нет, но по сути каждая итераци я внешнего цикла
 //  ставить в конец, то есть на место самый большой элемент.
 //  Следовательно в каждую итерацию внешнего цикла можно прбегать внутренний цикл на одно сравнение меньше.
-    private static void bubbleSort(List<Integer> array) {
+    public static void bubbleSort(List<Integer> array) {
         boolean f = true;
         int i = 0;
         while (f) {
@@ -207,7 +239,7 @@ public class SortArray {
 //  Модификация пузырьковой сортировки. Идея в том, что мы наш алгоритм по переменно
 //  из начала в конец и из конца в начало. При каждом проходе выставляя по концам массива
 //  максимальный и минимальный элемент неосортированной части.
-    private static void shakerSort(List<Integer> array) {
+    public static void shakerSort(List<Integer> array) {
         boolean f = true;
         int left = 0;
         int right = array.size() - 1;
@@ -233,4 +265,50 @@ public class SortArray {
         }
     }
 
+//  Сортировка расческой или Comb sort.
+//  Идея алгоритма ускореть доставку элементов "черепах" в нужное место.
+//  Сортируемый массив подвергается более грубым итерациям с большим шагом.
+//  При этом шаг постояно уменьшается на 1,247, пока не дойдет до 1.
+//  Тогда проходит итерация аналогичная пузырьковой сортировке.
+    public static void combSort(List<Integer> array) {
+        boolean f = true;
+        int delta = array.size() - 1;
+        while (delta > 1 || f) {
+            if (delta > 1) {
+                delta = (int) (delta / 1.247);
+            }
+
+            f = false;
+            int i = 0;
+            while (i + delta < array.size()) {
+                if (array.get(i) > array.get(i + delta)) {
+                    f = true;
+                    swap(array, i, i + delta);
+                }
+                ++i;
+            }
+        }
+    }
+
+//  Сортировка вставками или Insertion Sort.
+//  Суть сортировка в том, что мы на каждой итерации ставим элемент
+//  в уже отсортированную часть на то место где он должен быть.
+    public static void insertionSort(List<Integer> array) {
+        for (int i = 1; i < array.size(); i++) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (array.get(i) >= array.get(j)) {
+//                  Если найден элемент меньше или равный обрабатываемому вставляем перд ним.
+                    int buf = array.get(i);
+                    array.remove(i);
+                    array.add(j + 1,buf);
+                    break;
+                } else if (j == 0){
+//                  Если такой элемент не найден, то наш элемент меньше всех и мы вставляем его в начало.
+                    int buf = array.get(i);
+                    array.remove(i);
+                    array.add(j ,buf);
+                }
+            }
+        }
+    }
 }
