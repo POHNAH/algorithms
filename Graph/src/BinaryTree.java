@@ -2,41 +2,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BinaryTree extends  Tree{
-    private int value;
-    private BinaryTree leftBranch;
-    private BinaryTree rightBranch;
+    private NodeBinaryTree rootNode;
 
-    public BinaryTree(int value) {
-        this.value = value;
+    public BinaryTree() {
+        rootNode = null;
+    }
+    public void insertNode (int value) {
+        NodeBinaryTree newNode = new NodeBinaryTree(value);
+
+        if (rootNode == null) {
+            rootNode = newNode;
+            return;
+        }
+        else {
+            NodeBinaryTree currentNode = rootNode;
+
+            while (true) {
+                if (value < rootNode.getValue()) {
+
+                }
+
+            }
+        }
     }
 
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-    public BinaryTree getLeftBranch() {
-        return leftBranch;
-    }
-
-    public void setLeftBranch(BinaryTree leftBranch) {
-        this.leftBranch = leftBranch;
-    }
-
-    public BinaryTree getRightBranch() {
-        return rightBranch;
-    }
-
-    public void setRightBranch(BinaryTree rightBranch) {
-        this.rightBranch = rightBranch;
-    }
-
-    public List<Integer> traversal() {
-        ArrayList<Integer> array = new ArrayList<>();
-        if (this.getLeftBranch())
-        return array;
-    }
+//    public List<Integer> traversal() {
+//        ArrayList<Integer> array = new ArrayList<>();
+//        if (leftBranch != null)
+//            array.addAll(leftBranch.traversal());
+//        if (value   )
+//        return array;
+//    }
 }
