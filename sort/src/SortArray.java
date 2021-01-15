@@ -26,8 +26,17 @@ public class SortArray {
         getArray(numbers,100);
         printArray(numbers);
         Date d1 = new Date();
-        insertionSort(numbers);
+        treeSort(numbers);
         Date d2 = new Date();
+        System.out.println("Время выполнения алгоритма сортировка деревом: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        printArray(numbers);
+        System.out.println("");
+
+        getArray(numbers,100);
+        printArray(numbers);
+        d1 = new Date();
+        insertionSort(numbers);
+        d2 = new Date();
         System.out.println("Время выполнения алгоритма сортировка вставками: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
         printArray(numbers);
         System.out.println("");
@@ -320,6 +329,11 @@ public class SortArray {
 //  После чего мы делаем обход дерева и заносим значение по порядку в массив.
 //  Необходимо создать класс узел дерева и написать процедуру обхода дерева.
     public static void treeSort(List<Integer> array) {
-
+        BinaryTree tree = new BinaryTree();
+        for (int i = 0; i < array.size(); i++) {
+            tree.insertNode(array.get(i));
+        }
+        array.clear();
+        array.addAll(tree.traversal());
     }
 }

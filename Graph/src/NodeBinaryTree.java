@@ -19,6 +19,14 @@ public class NodeBinaryTree {
         this.value = value;
     }
 
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+
     public NodeBinaryTree getLeftBranch() {
         return leftBranch;
     }
