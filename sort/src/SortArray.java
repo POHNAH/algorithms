@@ -26,8 +26,17 @@ public class SortArray {
         getArray(numbers,100);
         printArray(numbers);
         Date d1 = new Date();
-        treeSort(numbers);
+        gnomeSort(numbers);
         Date d2 = new Date();
+        System.out.println("Время выполнения алгоритма гномья сортировка: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        printArray(numbers);
+        System.out.println("");
+
+        getArray(numbers,100);
+        printArray(numbers);
+        d1 = new Date();
+        treeSort(numbers);
+        d2 = new Date();
         System.out.println("Время выполнения алгоритма сортировка деревом: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
         printArray(numbers);
         System.out.println("");
@@ -335,5 +344,21 @@ public class SortArray {
         }
         array.clear();
         array.addAll(tree.traversal());
+    }
+
+//  Гномья сортировка или Gnome Sort.
+//  СВ цикле мы сравниваем соседние элементы, если происходит обмен,
+//  то мы делаем шаг назад. Таким образом все элементы в начале списка отсортированы.
+    public static void gnomeSort(List<Integer> array) {
+        for (int i = 1; i < array.size(); i++) {
+            if (i <= 0) {
+                i = 1;
+            }
+
+            if (array.get(i - 1) > array.get(i)) {
+                swap(array, i - 1, i);
+                i -= 2;
+            }
+        }
     }
 }
