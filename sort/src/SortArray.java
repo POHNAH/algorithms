@@ -26,8 +26,17 @@ public class SortArray {
         getArray(numbers,100);
         printArray(numbers);
         Date d1 = new Date();
-        gnomeSort(numbers);
+        heapSort(numbers);
         Date d2 = new Date();
+        System.out.println("Время выполнения алгоритма пирамидальная сортировка: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        printArray(numbers);
+        System.out.println("");
+
+        getArray(numbers,100);
+        printArray(numbers);
+        d1 = new Date();
+        gnomeSort(numbers);
+        d2 = new Date();
         System.out.println("Время выполнения алгоритма гномья сортировка: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
         printArray(numbers);
         System.out.println("");
@@ -128,7 +137,6 @@ public class SortArray {
     private static void swap(List<Integer> array, int indexA, int indexB) {
         if (indexA == indexB) return;
 
-//        System.out.println("Swap: " + indexA + ":" + array.get(indexA) + " c " + indexB + ":" + array.get(indexB));
         array.set(indexA, array.get(indexA) + array.get(indexB));
         array.set(indexB, array.get(indexA) - array.get(indexB));
         array.set(indexA, array.get(indexA) - array.get(indexB));
@@ -225,8 +233,6 @@ public class SortArray {
 
             if ((indexMax != array.size() - i) && (indexMax != i)) {
                 swap(array, array.size() - i - 1, indexMax);
-//            } else if (indexMax == i) {
-//                swap(array, indexMax, indexMin);
             }
         }
     }
@@ -359,6 +365,21 @@ public class SortArray {
                 swap(array, i - 1, i);
                 i -= 2;
             }
+        }
+    }
+
+//  Пирамидальная сортировка или Heap sort.
+//  Помещаем весь массив в двоичную кучу, затем извлекаем все элементы из кучи попорядку,
+//  помещая их в конец массива.
+    public static void heapSort(List<Integer> array) {
+        BinaryHeap binaryHeap = new BinaryHeap();
+
+        for (int i = 0; i < array.size(); i++) {
+            binaryHeap.insert(array.get(i));
+        }
+
+        for (int i = array.size() -1 ; i >= 0; i--) {
+            array.set(i, binaryHeap.removeMax());
         }
     }
 }
