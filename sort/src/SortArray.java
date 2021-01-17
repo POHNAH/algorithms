@@ -26,8 +26,17 @@ public class SortArray {
         getArray(numbers,100);
         printArray(numbers);
         Date d1 = new Date();
-        heapSort(numbers);
+        margeSort(numbers, 0, numbers.size() - 1);
         Date d2 = new Date();
+        System.out.println("Время выполнения алгоритма сортировка слиянием: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        printArray(numbers);
+        System.out.println("");
+
+        getArray(numbers,100);
+        printArray(numbers);
+        d1 = new Date();
+        heapSort(numbers);
+        d2 = new Date();
         System.out.println("Время выполнения алгоритма пирамидальная сортировка: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
         printArray(numbers);
         System.out.println("");
@@ -380,6 +389,50 @@ public class SortArray {
 
         for (int i = array.size() -1 ; i >= 0; i--) {
             array.set(i, binaryHeap.removeMax());
+        }
+    }
+
+//  Сортировка слиянием или Marge Sort.
+//  Рекурсивынй алгоритм, в котором мы делим массив по полам,
+//  и применяем сортировку к с каждой половине.
+//  После чего проодим слияние результатов в один массив.
+    public static void margeSort(List<Integer> array, int leftIndex, int rightIndex) {
+        if (rightIndex - leftIndex > 1) {
+            margeSort(array, leftIndex, (leftIndex + rightIndex) / 2);
+            margeSort(array,(leftIndex + rightIndex) / 2 + 1, rightIndex);
+        }
+
+        List<Integer> list = new ArrayList<>();
+        int l = leftIndex;
+        int r = (leftIndex + rightIndex) / 2 + 1;
+
+        while (true) {
+            if ((l <= (leftIndex + rightIndex) / 2) && (r <= rightIndex)) {
+                if (array.get(l) < array.get(r)) {
+                    list.add(array.get(l));
+                    ++l;
+                }
+                else {
+                    list.add(array.get(r));
+                    ++r;
+                }
+            }
+            else if (l <= (leftIndex + rightIndex) / 2) {
+                list.addAll(array.subList(l,(leftIndex + rightIndex) / 2 + 1));
+                l = (leftIndex + rightIndex) / 2 + 1;
+            }
+            else if (r <= rightIndex) {
+                list.addAll(array.subList(r,rightIndex + 1));
+                r = rightIndex + 1;
+            }
+            else
+                break;
+        }
+
+        int j = leftIndex;
+        for (int i = 0; i < list.size(); i++) {
+            array.set(j, list.get(i));
+            ++j;
         }
     }
 }
