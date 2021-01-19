@@ -3,9 +3,7 @@
 //Задача в том что бы обновить в памяти основные алгоритмы
 //А так же создать публичный проект на гитхабе для демонстрации своих навыков потенциальным работодателям
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class SortArray {
     public static List<Integer> numbers = new ArrayList<>();
@@ -26,8 +24,26 @@ public class SortArray {
         getArray(numbers,100);
         printArray(numbers);
         Date d1 = new Date();
-        margeSort(numbers, 0, numbers.size() - 1);
+        countingSortMap(numbers);
         Date d2 = new Date();
+        System.out.println("Время выполнения алгоритма сортировка подсчетом через HashMap: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        printArray(numbers);
+        System.out.println("");
+
+        getArray(numbers,100);
+        printArray(numbers);
+        d1 = new Date();
+        countingSort(numbers);
+        d2 = new Date();
+        System.out.println("Время выполнения алгоритма сортировка подсчетом: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
+        printArray(numbers);
+        System.out.println("");
+
+        getArray(numbers,100);
+        printArray(numbers);
+        d1 = new Date();
+        margeSort(numbers, 0, numbers.size() - 1);
+        d2 = new Date();
         System.out.println("Время выполнения алгоритма сортировка слиянием: " + (d2.getTime() - d1.getTime()) + " милисекунд.");
         printArray(numbers);
         System.out.println("");
@@ -435,4 +451,67 @@ public class SortArray {
             ++j;
         }
     }
+
+//  Сортировка подсчетом или Counting sort.
+//  Идея алгоритма в том, что бы взять дополнительный массив
+//  размером в разницу между минимальным и максимальным элементом сортируемого масиива.
+//  После чего в один проход по массиву отпределить сколько входжений имеет число равное индексу
+//  вспомогательного массива. Затем просто пройтись по дополнительному массиву и заполнить основной,
+//  операясь на эти данные.
+    public static void countingSort(List<Integer> array) {
+        int min = array.get(0);
+        int max = array.get(0);
+        for (int i = 1; i < array.size(); i++) {
+            if (min > array.get(i)) min = array.get(i);
+            if (max < array.get(i)) max = array.get(i);
+        }
+
+        int delta = max - min + 1;
+        Integer[] list = new Integer[delta];
+
+        int index;
+        for (int i = 0; i < array.size(); i++) {
+            index = array.get(i) - min;
+            if (list[index] == null)
+                list[index] = 1;
+            else
+                list[index] += 1;
+        }
+
+        array.clear();
+
+        for (int i = 0; i < list.length; i++) {
+            if (list[i] == null)
+                continue;
+            for (int j = 0; j < list[i]; j++) {
+                array.add(i + min);
+            }
+        }
+    }
+
+//  Сортировка подсчетом или Counting sort.
+//  Тоже что и предидущий но не через array, а через Map
+    public static void countingSortMap(List<Integer> array) {
+        int min = array.get(0);
+        int max = array.get(0);
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 1; i < array.size(); i++) {
+            map.merge(array.get(i), 1, (a, b) -> b + 1);
+            if (min > array.get(i)) min = array.get(i);
+            if (max < array.get(i)) max = array.get(i);
+        }
+
+        array.clear();
+        for (int i = min; i <= max; i++) {
+            int key = map.getOrDefault(i, -1);
+            if (key == -1)
+                continue;
+
+            for (int j = 0; j < key; j++) {
+                array.add(i);
+            }
+        }
+    }
+
+
 }
